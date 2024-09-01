@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Création client</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+</head>
+<body>
+    <h1> Création d'un client : </h1>
+<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+    <form action="http://localhost:8000" method="post" target="dummyframe">
+        <input type="text" placeholder="entrer nom client" name="client_name" required></input>
+        <input type="submit" id="submit"></input>
+    </form>
+    <script>
+        $( "#submit" ).click(function() {window.location.href='index.html'})
+    </script>
+</body>
+</html>

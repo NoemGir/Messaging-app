@@ -1,0 +1,87 @@
+services:
+
+  web:
+    build : ./web
+    ports:
+        - 8080:80
+    volumes: 
+        - './web:/usr/share/nginx/html'
+    networks: 
+      - app-network
+    depends_on:
+      - init-database
+
+  mysql:
+    image : mysql:latest
+    ports: 
+      - 3306:3306
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: mydatabase
+    volumes:
+     - mysql_volume:/var/lib/mysql
+    networks: 
+     - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+  
+  init-database:
+    build: ./init-database
+    environment:
+      MYSQL_PASSWORD: secret
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: root
+      MYSQL_SERVER_NAME: mysql
+      MYSQL_PORT: 3306
+    networks: 
+      - app-network
+    volumes:
+      - ./init-database/init.py:/usr/src/app/init.py
+    depends_on:
+      mysql:  
+        condition: service_healthy
+
+  fastapi_app:
+    build:
+      context: ./fastAPI
+    ports:
+      - "8000:8000"
+    working_dir: /code/app
+    command: uvicorn main:app --host 0.0.0.0 --reload
+    environment:
+      MYSQL_PASSWORD: secret
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: root
+      MYSQL_SERVER_NAME: mysql
+      MYSQL_PORT: 3306
+    volumes:
+      - ./fastAPI:/code/app
+    networks:
+      - app-network
+    restart: on-failure
+
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    restart: always
+    volumes:
+      - ./mqtt/config:/mosquitto/config
+      - ./mqtt/data:/mosquitto/data
+      - ./mqtt/log:/mosquitto/log
+    ports:
+      - 1883:1883
+      - 8083:8083
+    stdin_open: true 
+    networks:
+      - app-network
+    tty: true
+   
+volumes:
+  mysql_volume:
+
+networks: 
+  app-network:
+    driver: bridge

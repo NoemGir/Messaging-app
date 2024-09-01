@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>DataBase communication</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js" defer></script>
+    <script src='scripts/script-mqtt.js' defer> </script>
+    <script src='scripts/script-database.js' defer> </script>
+</head>
+<body>
+    <div id="head">
+        <h1>Messagerie Home</h1>
+        <input type='button' value = 'Nouveau client' onclick="window.location.href='user-create.html'"></input>
+    </div>
+    <div id="client-selection">
+        <div id="div-client-list">
+            <p> Liste des clients :<p>
+
+            <ul id="client-list"></ul>
+            <div class= "suppr-button-div">
+                <input type="button" value ="supprimer" id="suppr-client" style="display:none"></input>
+            </div>
+        </div>
+        <div id="client-informations">
+            <h2 id="info-title"></h2>
+            <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+            <form id="form" method="post" target="dummyframe">
+                <p id="indication" style='color:red'></p>
+                <input type='text' id = "new-sub-name" name="sub_name" placeholder="nouvel abonnement" name="sub_name" required></input>
+                <input type='text' id = "client_id" name="client_id" style="display:none;"></input>
+                <input type="submit" id="submit-form"></input>
+            </form>
+            <div id = "div-list-sub">
+                <p> Liste des abonnements : </p>
+                <ul id = "sub-list">
+                </ul>
+            </div>
+            <input type="button" value ="supprimer" id="suppr-sub" style="display:none"></input>
+        </div>
+    </div>
+    <div id="messagerie">
+        <div id='ecrire_message' style='display:none;'>
+            <span>Envoyer un message : </span>
+            <form id='send-message-form'>
+                <div>Topic :
+                    <input id="topic" name="topic" type='text' required></input>
+                </div>
+                <div><div id= 'messae-text'>Message :</div>
+                    <textarea id="message" name="message" type='text' required></textarea>
+                </div>
+                <input type='submit' value='envoyer'></input>
+            </form>
+        </div>
+        <div id='div-message-area'>
+            <span>Messages reçus : </span>
+            <div id = 'message-area'></div>
+        </div>
+    </div>
+</body>
+</html>
