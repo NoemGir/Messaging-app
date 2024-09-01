@@ -1,8 +1,7 @@
-var clients = {}; // Create an empty array
+var clients = {}; // stock dict of the mqtt clients variables
 
 
 function client_unsubscribe(clientId, topic) {
-
     clients[clientId].unsubscribe(topic, () => {
         console.log('Unsubscribed');
     })
@@ -50,6 +49,7 @@ function connect_client(clientId, clientName, subscriptions) {
         console.log('Reconnecting...')
     })
     client.on('connect', () => {
+        // when connected, add all the existing subscriptions of the client
         console.log(`Client connected: ${clientName}`)
         clients[clientId] = client
         for (let i = 0; i < subscriptions.length; i++){
@@ -57,6 +57,7 @@ function connect_client(clientId, clientName, subscriptions) {
         }
     })
     client.on('message', function (topic, message) {
+        // post the received message in the chat area
         console.log(message.toString())
         let area = document.getElementById('message-area')
         let newMessage = document.createElement('p')

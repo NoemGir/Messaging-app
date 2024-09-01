@@ -1,3 +1,4 @@
+//stock the selected client and subscription
 var clicked_client = null
 var clicked_sub = null
 
@@ -136,6 +137,7 @@ function supprSubscription(){
     .catch(error => error);
 }
 
+// send a message with MQTT protocol
 function send_Message(event){
     event.preventDefault();
     var message = $('#message').val();
@@ -144,6 +146,7 @@ function send_Message(event){
     
 }
 
+//eventListener and recuperation of the list of clients
 document.getElementById("form").addEventListener("submit", verifyNewSub, false);
 document.getElementById("send-message-form").addEventListener("submit", send_Message, false);
 $.getJSON('http://localhost:8000', addClients);

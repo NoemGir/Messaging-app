@@ -1,3 +1,5 @@
+# if the database isn't initialized with the correct table and data, create the missing tables
+
 import mysql.connector
 from mysql.connector import errorcode
 import os
@@ -21,10 +23,6 @@ config = {
 
 
 TABLES = {}
-TABLES['subscriptions'] = (
-    "CREATE TABLE IF NOT EXISTS subscriptions ("
-    "sub_name VARCHAR(10) NOT NULL,"
-   " PRIMARY KEY(`sub_name`));")
 
 TABLES['clients'] = (
     "CREATE TABLE IF NOT EXISTS clients ("
@@ -38,6 +36,7 @@ TABLES['subbed'] = (
     "client_id INT NOT NULL,"
     "PRIMARY KEY(`sub_name`, `client_id`));")
 
+# Add the tables to the database
 def add_tables(cursor, TABLES):
     for table_name in TABLES:
         table_description = TABLES[table_name]
@@ -54,6 +53,7 @@ def add_tables(cursor, TABLES):
         else:
             print("OK")
 
+# alter the table to get the autoincrement ( only if the tables don't already exists)
 def alter_table(cursor, tableName):
     if tableName in TABLES:
         sql = "ALTER TABLE " + tableName + " AUTO_INCREMENT=0;"
@@ -67,6 +67,7 @@ def alter_table(cursor, tableName):
     else:
         print("table does not exists")
 
+# when connected, go to the right database and run the creation of the tables
 def modify_tables():
     cursor = conn.cursor()
     try:
@@ -76,6 +77,7 @@ def modify_tables():
     else:
         add_tables(cursor, TABLES)
 
+#connection
 try:
   conn = mysql.connector.connect(**config)
 except mysql.connector.Error as err:
