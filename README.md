@@ -3,7 +3,9 @@ Messaging app where clients can communicates between each others.
 A client can send messages and subscribe to different topics.  
 We have the possibility to see all the messages received by the clients.  
 
-This project is designed primarily for training in Docker utilization.  
+This project is designed primarily for training in Docker utilization. 
+  
+/!\ BEWARE /!\  starting the containers can take a little bit of time due to waiting for the mysql database to be healthy
 
 ### Specifications 
 
