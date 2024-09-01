@@ -1,1 +1,5 @@
-mqtt/data/mosquitto.db
+mqtt/data/*
+mqtt/log/*
+
+!mqtt/log/.gitkeep
+!mqtt/data/.gitkeep
